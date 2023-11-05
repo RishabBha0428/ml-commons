@@ -71,6 +71,7 @@ public class ConnectorUtilsTest {
                 .build();
         Connector connector = HttpConnector.builder().name("test connector").version("1").protocol("http").actions(Arrays.asList(predictAction)).build();
         ConnectorUtils.processInput(mlInput, connector, new HashMap<>(), scriptService);
+
     }
 
     @Test
@@ -146,6 +147,7 @@ public class ConnectorUtilsTest {
         ConnectorUtils.processOutput(null, null, null, null);
     }
 
+
     @Test
     public void processOutput_NoPostprocessFunction_jsonResponse() throws IOException {
         ConnectorAction predictAction = ConnectorAction.builder()
@@ -204,7 +206,11 @@ public class ConnectorUtilsTest {
         Map<String, String> parameters = new HashMap<>();
         parameters.put("key1", "value1");
         Connector connector = HttpConnector.builder().name("test connector").version("1").protocol("http").parameters(parameters).actions(Arrays.asList(predictAction)).build();
+        exceptionRule.expect(IllegalArgumentException.class);
+        exceptionRule.expectMessage("Wrong input");
         RemoteInferenceInputDataSet remoteInferenceInputDataSet = ConnectorUtils.processInput(mlInput, connector, new HashMap<>(), scriptService);
+
+        //ConnectorUtils.processOutput(null, null, null, null);
         Assert.assertNotNull(remoteInferenceInputDataSet.getParameters());
         Assert.assertEquals(1, remoteInferenceInputDataSet.getParameters().size());
         Assert.assertEquals(expectedProcessedInput, remoteInferenceInputDataSet.getParameters().get(resultKey));
