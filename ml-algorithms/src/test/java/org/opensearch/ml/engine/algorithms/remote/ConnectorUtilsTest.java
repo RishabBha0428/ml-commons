@@ -210,7 +210,6 @@ public class ConnectorUtilsTest {
         exceptionRule.expectMessage("Wrong input");
         RemoteInferenceInputDataSet remoteInferenceInputDataSet = ConnectorUtils.processInput(mlInput, connector, new HashMap<>(), scriptService);
 
-        //ConnectorUtils.processOutput(null, null, null, null);
         Assert.assertNotNull(remoteInferenceInputDataSet.getParameters());
         Assert.assertEquals(1, remoteInferenceInputDataSet.getParameters().size());
         Assert.assertEquals(expectedProcessedInput, remoteInferenceInputDataSet.getParameters().get(resultKey));
